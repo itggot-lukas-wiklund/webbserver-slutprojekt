@@ -6,11 +6,13 @@ html
 		header
 			.group
 				a class="title" Questions
-			.grou
+			.group
 				- if is_authenticated
 					a My Account
 					a Log out
 				- else
 					a Log in
 					a Register
-		== yield
+		
+		.container
+			== yield
