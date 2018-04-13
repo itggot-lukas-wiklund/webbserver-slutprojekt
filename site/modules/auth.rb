@@ -25,6 +25,23 @@ module Auth
         return session[:user_id]
     end
 
+    def get_user_by_id(account_id, db)
+        db = open_connection_if_nil(db)
+        accounts = db.execute("SELECT * FROM accounts WHERE id = ?", [account_id])
+        if accounts.size() == 0
+            return nil
+        end
+        return accounts[0]
+    end
+
+    def get_logged_in_user(session)
+        account_id = get_logged_in_user_id(session)
+        if account_id == nil
+            return nil
+        end
+        return get_user_by_id(account_id, nil)
+    end
+
     def register(email, username, password, session)
         db = open_connection()
         account = get_user(email, db)

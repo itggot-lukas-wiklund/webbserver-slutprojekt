@@ -2,7 +2,6 @@ form method="post" action="/account/setup_profile"
     input type="text" name="name" placeholder="Full Name" required=""
     select name="gender"
         - genders.each do |gender|
-            option = gender['title']
+            option value="#{gender['id']}" = gender['title']
     input type="text" name="location" placeholder="Location (optional)"
-    textarea cols="30" rows="10" name="bio" placeholder="Bio (optional)"
-    textarea cols="30" rows="10" name="interests" placeholder="Interests (optional)"
+    input type="submit" value="Save Profile"
