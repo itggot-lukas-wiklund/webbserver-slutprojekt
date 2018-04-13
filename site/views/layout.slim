@@ -3,16 +3,36 @@ html
 		title Questions
 		link rel="stylesheet" href="/css/base.css"
 	body
+		#account-dropdown-closer.hidden onclick="closeDropdownClicked()"
 		header
 			.group
-				a class="title" Questions
+				a.title href="/" Questions
 			.group
 				- if is_authenticated
-					a My Account
-					a Log out
+					.dropdown.clickable onclick="toggleAccountDropdown()"
+						img src="/img/account.svg"
+						#account-dropdown.dropdown-content.hidden
+							a href="/profile/" My Profile
+							a href="/account/" Account Settings
+							a.text-danger href="/account/logout/" Logout
 				- else
-					a Log in
-					a Register
+					a href="/account/login/" Login
+					a href="/account/register/" Register
 		
 		.container
 			== yield
+		
+		javascript:
+			function toggleAccountDropdown() {
+				var dropdown = document.getElementById('account-dropdown');
+				var closer = document.getElementById('account-dropdown-closer');
+				dropdown.classList.toggle('hidden');
+				closer.classList.toggle('hidden');
+			}
+
+			function closeDropdownClicked() {
+				var dropdown = document.getElementById('account-dropdown');
+				var closer = document.getElementById('account-dropdown-closer');
+				dropdown.classList.add('hidden');
+				closer.classList.add('hidden');
+			}
