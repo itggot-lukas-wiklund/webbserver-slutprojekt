@@ -88,3 +88,52 @@ header .title {
 .text-danger {
     color: red;
 }
+
+.question {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    background-color: #dddddd;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.question h1 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.question p {
+    font-size: 16px;
+    margin: 10px 0 0 0;
+}
+
+.question .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.question .interactions {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.question .interactions * {
+    margin-right: 10px;
+}
+
+.question .author {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    float: right;
+}
+
+.question .author img {
+    width: 50px;
+    margin-right: 10px;
+}

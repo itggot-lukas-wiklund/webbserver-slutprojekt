@@ -1,0 +1,15 @@
+- questions.each do |question|
+  .question
+		h1 = question.title
+		p = question.description
+		.footer
+			.interactions
+				a
+					= question.likes.size()
+					|  Like
+					- if question.likes.size() > 1
+						| s
+				a 0 Comments
+			.author
+				img src="/uploads/avatars/#{question.author['avatar']}"
+				= question.author['name']
