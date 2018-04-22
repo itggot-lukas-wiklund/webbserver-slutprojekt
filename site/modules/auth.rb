@@ -61,7 +61,7 @@ module Auth
         account = get_user_email(email, db)
         session[:user_id] = account['id']
 
-        db.execute("INSERT INTO profiles(account_id) VALUES(?)", [account['id']])
+        db.execute("INSERT INTO profiles(account_id, avatar) VALUES(?,?)", [account['id', 'default.png']])
 
         return account
     end
