@@ -4,4 +4,5 @@ h2
 	= profile['name']
 h2
 	| Location: 
-	= profile['location']
+	a href="https://www.google.com/maps/place/#{profile['location']}"
+		= profile['location']
