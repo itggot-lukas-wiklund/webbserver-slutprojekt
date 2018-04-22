@@ -18,7 +18,8 @@ get '/profile/?' do
         return redirect('/')
     end
 
-    return slim :'profile/my_profile', locals:get_layout_locals()
+    profile = Profile::get_profile(get_logged_in_user_id(session), nil)
+    return slim :'profile/my_profile', locals:get_layout_locals().merge({'profile' => profile})
 end
 
 # ----- Account -----
