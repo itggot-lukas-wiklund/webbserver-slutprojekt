@@ -35,6 +35,8 @@ header .title {
 }
 
 .content {
+    margin: auto;
+    width: 1000px;
     padding: 32px;
 }
 
@@ -90,9 +92,9 @@ header .title {
 }
 
 .question {
+    margin: 30px auto;
     width: 100%;
     max-width: 800px;
-    margin: auto;
     background-color: #dddddd;
     box-sizing: border-box;
     padding: 20px;
@@ -136,4 +138,26 @@ header .title {
 .question .author img {
     width: 50px;
     margin-right: 10px;
+}
+
+.ask-question {
+    margin: auto;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ask-question * {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.ask-question textarea {
+    height: 100px;
+}
+
+.ask-question input[type="submit"] {
+    height: 40px;
 }
