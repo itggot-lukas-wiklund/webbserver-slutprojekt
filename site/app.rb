@@ -2,14 +2,17 @@ require 'sinatra'
 require 'slim'
 require_relative 'modules/auth'
 require_relative 'modules/profile'
+require_relative 'modules/question'
 
 enable :sessions
 
 include Auth
 include Profile
+include Question
 
 get '/' do
-    return slim :'index/index', locals:get_layout_locals()
+    questions = Question::get_all_questions(nil)
+    return slim :'index/index', locals:get_layout_locals().merge({'questions' => questions})
 end
 
 # ----- Profile -----
