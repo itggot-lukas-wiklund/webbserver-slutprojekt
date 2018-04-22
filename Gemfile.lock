@@ -1,0 +1,33 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bcrypt (3.1.11)
+    mustermann (1.0.2)
+    rack (2.0.4)
+    rack-protection (2.0.1)
+      rack
+    sinatra (2.0.1)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.1)
+      tilt (~> 2.0)
+    slim (3.0.9)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 1.3.3, < 2.1)
+    sqlite3 (1.3.13)
+    sqlite3 (1.3.13-x64-mingw32)
+    temple (0.8.0)
+    tilt (2.0.8)
+
+PLATFORMS
+  ruby
+  x64-mingw32
+
+DEPENDENCIES
+  bcrypt
+  sinatra
+  slim
+  sqlite3
+
+BUNDLED WITH
+   1.16.1
