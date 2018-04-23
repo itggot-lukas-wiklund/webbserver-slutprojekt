@@ -1,8 +1,9 @@
-form.ask-question method="post" action="/post_question/"
-	h1 Ask a Question
-	input type="text" placeholder="Title" name="title"
-	textarea name="description" placeholder="Question"
-	input type="submit" value="Post Question"
+- if is_authenticated
+	form.ask-question method="post" action="/"
+		h1 Ask a Question
+		input type="text" name="title" placeholder="Title"
+		textarea name="description" placeholder="Question"
+		input type="submit" value="Post Question"
 
 - questions.each do |question|
   .question
