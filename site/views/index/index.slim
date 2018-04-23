@@ -1,8 +1,10 @@
 - if is_authenticated
 	form.ask-question method="post" action="/"
 		h1 Ask a Question
-		input type="text" name="title" placeholder="Title"
-		textarea name="description" placeholder="Question"
+		- if !error.empty?
+			p class="text-danger" = error
+		input type="text" name="title" placeholder="Title" required=""
+		textarea name="description" placeholder="Question" required=""
 		input type="submit" value="Post Question"
 
 - questions.each do |question|

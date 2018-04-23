@@ -59,4 +59,9 @@ module Question
         db = open_connection_if_nil(db)
         return db.execute("SELECT * FROM question_likes WHERE question_id = ?", [question_id])
     end
+
+    def post_question(account_id, title, description, db)
+        db = open_connection_if_nil(db)
+        db.execute("INSERT INTO questions(account_id, title, description) VALUES(?, ?, ?)", [account_id, title, description])
+    end
 end

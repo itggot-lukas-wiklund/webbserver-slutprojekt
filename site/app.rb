@@ -12,7 +12,25 @@ include Question
 
 get '/' do
     questions = Question::get_all_questions(nil)
-    return slim :'index/index', locals:get_layout_locals().merge({'questions' => questions})
+    return slim :'index/index', locals:get_layout_locals().merge({'questions' => questions, 'error': ''})
+end
+
+post '/' do
+    if !Auth::is_authenticated(session)
+        return redirect('/')
+    end
+
+    title = params['title']
+    description = params['description']
+
+    if title.empty? || description.empty?
+        questions = Question::get_all_questions(nil)
+        return slim :'index/index', locals:get_layout_locals().merge({'questions' => questions, 'error': 'Please fill in all the fields!'})
+    end
+
+    Question::post_question(Auth::get_logged_in_user_id(session), title, description, nil)
+
+    return redirect('/')
 end
 
 # ----- Profile -----
