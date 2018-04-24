@@ -33,6 +33,12 @@ post '/' do
     return redirect('/')
 end
 
+post '/like_question/' do
+    question_id = params[:question_id]
+    Question::toggle_question_like(Auth::get_logged_in_user_id(session), question_id, nil)
+    return ""
+end
+
 # ----- Profile -----
 get '/profile/?' do
     if !Auth::is_authenticated(session)

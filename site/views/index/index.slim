@@ -13,12 +13,20 @@
 		p = question.description
 		.footer
 			.interactions
-				a
-					= question.likes.size()
-					|  Like
-					- if question.likes.size() > 1
-						| s
-				a 0 Comments
+				div
+					a
+						= question.likes.size()
+						|  Like
+						- if question.likes.size() != 1
+							| s
+					a 0 Comments
+				- if is_authenticated
+					div
+						- if question.is_liked
+							a.clickable.text-liked onclick="likeQuestion(this, #{question.id})" Like
+						- else
+							a.clickable onclick="likeQuestion(this, #{question.id})" Like
+						a.clickable Comment
 			.author
 				img src="/uploads/avatars/#{question.author['avatar']}"
 				= question.author['name']

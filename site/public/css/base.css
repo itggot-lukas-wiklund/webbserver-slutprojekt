@@ -88,7 +88,11 @@ header .title {
 }
 
 .text-danger {
-    color: red;
+    color: red !important;
+}
+
+.text-liked {
+    color: blue !important;
 }
 
 .question {
@@ -120,12 +124,14 @@ header .title {
 
 .question .interactions {
     display: flex;
-    flex-direction: row;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
 }
 
 .question .interactions * {
-    margin-right: 10px;
+    margin: 10px 10px 0 0;
+    color: black;
 }
 
 .question .author {

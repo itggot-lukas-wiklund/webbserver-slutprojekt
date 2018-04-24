@@ -8,14 +8,19 @@ module Question
     class Question
         def initialize(question_id, title, description, author_id)
             db = open_connection()
+            @id = question_id
             @title = title;
             @description = description;
             @author = Profile::get_profile(author_id, db)
             likes_hash = get_question_likes(question_id, db)
             @likes = []
+            @is_liked = is_question_liked(author_id, question_id, db)
             likes_hash.each do |like|
                 @likes.push(Profile::get_profile(like['account_id'], db))
             end
+        end
+        def id
+            return @id
         end
         def title
             return @title
@@ -28,6 +33,9 @@ module Question
         end
         def likes
             return @likes
+        end
+        def is_liked
+            return @is_liked
         end
     end
 
@@ -63,5 +71,30 @@ module Question
     def post_question(account_id, title, description, db)
         db = open_connection_if_nil(db)
         db.execute("INSERT INTO questions(account_id, title, description) VALUES(?, ?, ?)", [account_id, title, description])
+    end
+
+    def toggle_question_like(account_id, question_id, db)
+        db = open_connection_if_nil(db)
+        if is_question_liked(account_id, question_id, db)
+            unlike_question(account_id, question_id, db)
+        else
+            like_question(account_id, question_id, db)
+        end
+    end
+
+    def is_question_liked(account_id, question_id, db)
+        db = open_connection_if_nil(db)
+        result = db.execute("SELECT * FROM question_likes WHERE account_id = ? AND question_id = ?", [account_id, question_id])
+        return result.size() > 0
+    end
+
+    def like_question(account_id, question_id, db)
+        db = open_connection_if_nil(db)
+        db.execute("INSERT INTO question_likes(account_id, question_id) VALUES(?, ?)", [account_id, question_id])
+    end
+
+    def unlike_question(account_id, question_id, db)
+        db = open_connection_if_nil(db)
+        db.execute("DELETE FROM question_likes WHERE question_id = ? AND account_id = ?", [question_id, account_id])
     end
 end

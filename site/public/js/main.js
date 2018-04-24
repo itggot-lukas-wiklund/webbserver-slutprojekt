@@ -1,3 +1,14 @@
+// ----- Like and Comment -----
+function likeQuestion(element, questionID) {
+    var http = new XMLHttpRequest();
+    http.open("POST", "/like_question/", true);
+    http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    http.send("question_id=" + questionID);
+    http.onload = function() {
+        element.classList.toggle("text-liked");
+    }
+}
+
 // ----- Dropdown -----
 function toggleAccountDropdown() {
     var dropdown = document.getElementById('account-dropdown');
