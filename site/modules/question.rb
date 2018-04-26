@@ -6,7 +6,7 @@ include Profile
 module Question
     # Gör Question till en klass så jag enkelt via Slim kan få tag på skaparen istället för dess ID osv. 
     class Question
-        def initialize(question_id, title, description, author_id)
+        def initialize(account_id, question_id, title, description, author_id)
             db = open_connection()
             @id = question_id
             @title = title;
@@ -14,7 +14,7 @@ module Question
             @author = Profile::get_profile(author_id, db)
             likes_hash = get_question_likes(question_id, db)
             @likes = []
-            @is_liked = is_question_liked(author_id, question_id, db)
+            @is_liked = is_question_liked(account_id, question_id, db)
             likes_hash.each do |like|
                 @likes.push(Profile::get_profile(like['account_id'], db))
             end
@@ -53,12 +53,12 @@ module Question
         return db
     end
 
-    def get_all_questions(db)
+    def get_all_questions(account_id, db)
         db = open_connection_if_nil(db)
         hashes = db.execute("SELECT * FROM questions")
         questions = []
         hashes.each do |hash|
-            questions.push(Question.new(hash['id'], hash['title'], hash['description'], hash['account_id']))
+            questions.push(Question.new(account_id, hash['id'], hash['title'], hash['description'], hash['account_id']))
         end
         return questions
     end
@@ -96,5 +96,9 @@ module Question
     def unlike_question(account_id, question_id, db)
         db = open_connection_if_nil(db)
         db.execute("DELETE FROM question_likes WHERE question_id = ? AND account_id = ?", [question_id, account_id])
+    end
+
+    def get_comments(question_id, db)
+        
     end
 end

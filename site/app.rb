@@ -11,7 +11,7 @@ include Profile
 include Question
 
 get '/' do
-    questions = Question::get_all_questions(nil)
+    questions = Question::get_all_questions(Auth::get_logged_in_user_id(session), nil)
     return slim :'index/index', locals:get_layout_locals().merge({'questions' => questions, 'error': ''})
 end
 
@@ -24,7 +24,7 @@ post '/' do
     description = params['description']
 
     if title.empty? || description.empty?
-        questions = Question::get_all_questions(nil)
+        questions = Question::get_all_questions(Auth::get_logged_in_user_id(session), nil)
         return slim :'index/index', locals:get_layout_locals().merge({'questions' => questions, 'error': 'Please fill in all the fields!'})
     end
 
@@ -34,9 +34,11 @@ post '/' do
 end
 
 post '/like_question/' do
+    db = Auth::open_connection();
+    account_id = params[:account_id]
     question_id = params[:question_id]
-    Question::toggle_question_like(Auth::get_logged_in_user_id(session), question_id, nil)
-    return ""
+    Question::toggle_question_like(account_id, question_id, db)
+    return Question::get_question_likes(question_id, db).size().to_s
 end
 
 # ----- Profile -----

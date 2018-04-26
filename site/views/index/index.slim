@@ -14,7 +14,7 @@
 		.footer
 			.interactions
 				div
-					a
+					a id="question-likes-#{question.id}"
 						= question.likes.size()
 						|  Like
 						- if question.likes.size() != 1
@@ -23,9 +23,9 @@
 				- if is_authenticated
 					div
 						- if question.is_liked
-							a.clickable.text-liked onclick="likeQuestion(this, #{question.id})" Like
+							a.clickable.text-liked onclick="likeQuestion(this, #{user['id']}, #{question.id})" Like
 						- else
-							a.clickable onclick="likeQuestion(this, #{question.id})" Like
+							a.clickable onclick="likeQuestion(this, #{user['id']}, #{question.id})" Like
 						a.clickable Comment
 			.author
 				img src="/uploads/avatars/#{question.author['avatar']}"

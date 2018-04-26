@@ -1,11 +1,18 @@
 // ----- Like and Comment -----
-function likeQuestion(element, questionID) {
+function likeQuestion(element, accountID, questionID) {
+    console.log(accountID + ", " + questionID);
     var http = new XMLHttpRequest();
+    var questionLikes = document.getElementById("question-likes-" + questionID);
     http.open("POST", "/like_question/", true);
     http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    http.send("question_id=" + questionID);
+    http.send("account_id=" + accountID + "&question_id=" + questionID);
     http.onload = function() {
         element.classList.toggle("text-liked");
+        var likes = http.responseText;
+        questionLikes.innerHTML = likes + " Like";
+        if (likes != "1") {
+            questionLikes.innerHTML += "s";
+        }
     }
 }
 
