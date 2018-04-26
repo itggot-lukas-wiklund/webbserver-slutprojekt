@@ -33,6 +33,16 @@ post '/' do
     return redirect('/')
 end
 
+get '/question/:question_id' do
+    question_id = params["question_id"]
+    question = Question::get_question(question_id, account_id, db)
+    if question == nil
+        return "404 - Question not found"
+    end
+
+    return slim :'index/question', locals:get_layout_locals().merge({"question": question})
+end
+
 post '/like_question/' do
     db = Auth::open_connection();
     account_id = params[:account_id]

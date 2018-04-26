@@ -9,8 +9,8 @@ module Question
         def initialize(account_id, question_id, title, description, author_id)
             db = open_connection()
             @id = question_id
-            @title = title;
-            @description = description;
+            @title = title
+            @description = description
             @author = Profile::get_profile(author_id, db)
             likes_hash = get_question_likes(question_id, db)
             @likes = []
@@ -39,6 +39,40 @@ module Question
         end
     end
 
+    class Answer
+        def initialize(account_id, answer_id, message, author_id)
+            db = open_connection()
+            @id = question_id
+            @message = message
+            @author = Profile::get_profile(author_id, db)
+            likes_hash = get_answer_likes(question_id, db)
+            @likes = []
+            @is_liked = is_answer_liked(account_id, question_id, db)
+            likes_hash.each do |like|
+                @likes.push(Profile::get_profile(like['account_id'], db))
+            end
+            @answers = get_answers(question_id, account_id, db)
+        end
+        def id
+            return @id
+        end
+        def message
+            return message
+        end
+        def author
+            return author
+        end
+        def likes
+            return @likes
+        end
+        def is_liked
+            return @is_liked
+        end
+        def answers
+            return @answers
+        end
+    end
+
     def open_connection()
         connection = SQLite3::Database.new('db/database.db')
         connection.results_as_hash = true
@@ -61,6 +95,15 @@ module Question
             questions.push(Question.new(account_id, hash['id'], hash['title'], hash['description'], hash['account_id']))
         end
         return questions
+    end
+
+    def get_question(question_id, account_id, db)
+        db = open_connection_if_nil(db)
+        hashes = db.execute("SELECT * FROM questions WHERE question_id = ?", [question_id])
+        if hashes.size() > 0
+            hash = hashes.first
+            return Question.new(account_id, question_id, hash["title"], hash["description"], hash["account_id"])
+        end
     end
 
     def get_question_likes(question_id, db)
@@ -98,7 +141,13 @@ module Question
         db.execute("DELETE FROM question_likes WHERE question_id = ? AND account_id = ?", [question_id, account_id])
     end
 
-    def get_comments(question_id, db)
-        
+    def get_answers(question_id,account_id, db)
+        db = open_connection_if_nil(db)
+        hashes = db.execute("SELECT * FROM answers WHERE question_id = ?", [question_id])
+        answers = []
+        hashes.each do |hash|
+            answers.push(Answer.new(account_id, hash["id"], hash["message"], hash["account_id"]))
+        end
+        return answers
     end
 end
