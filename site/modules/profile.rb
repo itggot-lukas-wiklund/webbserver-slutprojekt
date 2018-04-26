@@ -40,4 +40,15 @@ module Profile
 
         db.execute("UPDATE profiles SET name = ?, gender_id = ?, location = ? WHERE account_id = ?", [name, gender_id, location, account_id])
     end
+
+    def update_profile_avatar(account_id, avatar, db)
+        db = open_connection_if_nil(db)
+        profile = get_profile(account_id, db)
+        if profile == nil
+            puts "Failed to save avatar to profile with account ID: #{account_id}!"
+            return
+        end
+
+        db.execute("UPDATE profiles SET avatar = ? WHERE account_id = ?", [avatar, account_id])
+    end
 end

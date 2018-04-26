@@ -90,6 +90,48 @@ get '/profile/?' do
     return slim :'profile/my_profile', locals:get_layout_locals().merge({'profile' => profile})
 end
 
+post '/profile/change_avatar/?' do
+    if !Auth::is_authenticated(session)
+        return redirect('/')
+    end
+
+    file = params["file"]
+    if file == nil
+        return redirect("/profile/")
+    end
+
+    filename = file["filename"]
+    tempfile = file["tempfile"]
+
+    while File.exists?(File.join(Dir.pwd, "/public/uploads/avatars/", filename))
+        index = filename.length - 1
+        dot_index = 0
+        while index > 0
+            char = filename[index]
+            if char == "."
+                dot_index = index
+                break
+            end
+            index -= 1
+        end
+        basename = filename[0..dot_index - 1]
+        extension = ""
+        if dot_index != 0
+            extension = filename[dot_index + 1..filename.length - 1]
+        end
+        basename += "0"
+        filename = basename + "." + extension
+    end
+
+    File.open(File.join(Dir.pwd, "/public/uploads/avatars/", filename), 'wb') do |f|
+        f.write(tempfile.read)
+    end
+
+    Profile::update_profile_avatar(Auth::get_logged_in_user_id(session), filename, nil)
+
+    return redirect("/profile/")
+end
+
 # ----- Account -----
 get '/account/login/?' do
     return slim :'account/login', locals:get_layout_locals()

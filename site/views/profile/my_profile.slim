@@ -1,5 +1,8 @@
 h1 My Profile
-img src="/uploads/avatars/#{profile['avatar']}"
+img.profile-image src="/uploads/avatars/#{profile['avatar']}"
+form method="post" action="/profile/change_avatar/" enctype="multipart/form-data"
+	input type="file" name="file"
+	input type="submit" value="Change Avatar"
 h2
 	| Name: 
 	= profile['name']

@@ -201,3 +201,7 @@ header .title {
 .ask-question input[type="submit"] {
     height: 40px;
 }
+
+.profile-image {
+    width: 200px;
+}
