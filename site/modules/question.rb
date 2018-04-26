@@ -150,6 +150,7 @@ module Question
         hashes.each do |hash|
             answers.push(Answer.new(account_id, hash["id"], hash["message"], hash["account_id"]))
         end
+        answers = answers.sort_by {|answer| answer.likes.size()}.reverse
         return answers
     end
 
