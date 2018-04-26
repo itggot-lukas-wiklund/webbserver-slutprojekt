@@ -1,6 +1,5 @@
-// ----- Like and Comment -----
+// ----- Like -----
 function likeQuestion(element, accountID, questionID) {
-    console.log(accountID + ", " + questionID);
     var http = new XMLHttpRequest();
     var questionLikes = document.getElementById("question-likes-" + questionID);
     http.open("POST", "/like_question/", true);
@@ -12,6 +11,22 @@ function likeQuestion(element, accountID, questionID) {
         questionLikes.innerHTML = likes + " Like";
         if (likes != "1") {
             questionLikes.innerHTML += "s";
+        }
+    }
+}
+
+function likeAnswer(element, accountID, answerID) {
+    var http = new XMLHttpRequest();
+    var answerLikes = document.getElementById("answer-likes-" + answerID);
+    http.open("POST", "/like_answer/", true);
+    http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    http.send("account_id=" + accountID + "&answer_id=" + answerID);
+    http.onload = function() {
+        element.classList.toggle("text-liked");
+        var likes = http.responseText;
+        answerLikes.innerHTML = likes + " Like";
+        if (likes != "1") {
+            answerLikes.innerHTML += "s";
         }
     }
 }

@@ -13,20 +13,24 @@
 		p = question.description
 		.footer
 			.interactions
-				div
-					a id="question-likes-#{question.id}"
+				a.reactions href="/question/#{question.id}"
+					div id="question-likes-#{question.id}"
 						= question.likes.size()
 						|  Like
 						- if question.likes.size() != 1
 							| s
-					a 0 Answers
+					div
+                        = question.answers.size()
+                        |  Answer
+                        - if question.answers.size() != 1
+                            | s
 				- if is_authenticated
 					div
 						- if question.is_liked
 							a.clickable.text-liked onclick="likeQuestion(this, #{user['id']}, #{question.id})" Like
 						- else
 							a.clickable onclick="likeQuestion(this, #{user['id']}, #{question.id})" Like
-						a.clickable Answer
+						a.clickable href="/question/#{question.id}" Answer
 			.author
 				img src="/uploads/avatars/#{question.author['avatar']}"
 				= question.author['name']

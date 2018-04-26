@@ -33,9 +33,9 @@ post '/' do
     return redirect('/')
 end
 
-get '/question/:question_id' do
-    question_id = params["question_id"]
-    question = Question::get_question(question_id, account_id, db)
+get '/question/:question_id/?' do
+    question_id = params["question_id"].to_i
+    question = Question::get_question(question_id, Auth::get_logged_in_user_id(session), nil)
     if question == nil
         return "404 - Question not found"
     end
@@ -43,12 +43,41 @@ get '/question/:question_id' do
     return slim :'index/question', locals:get_layout_locals().merge({"question": question})
 end
 
-post '/like_question/' do
+post '/question/:question_id/?' do
+    if !Auth::is_authenticated(session)
+        return slim :'index/question', locals:get_layout_locals().merge({"question": question, "error": "You need to be logged in to answer!"})
+    end
+    question_id = params["question_id"].to_i
+    message = params["answer"]
+
+    if message.empty?
+        return slim :'index/question', locals:get_layout_locals().merge({"question": question, "error": "You can't post an empty answer!"})
+    end
+
+    question = Question::get_question(question_id, Auth::get_logged_in_user_id(session), nil)
+    if question == nil
+        return "404 - Question not found"
+    end
+
+    Question::post_answer(question_id, message, Auth::get_logged_in_user_id(session), nil)
+
+    return redirect("/question/#{question_id}/")
+end
+
+post '/like_question/?' do
     db = Auth::open_connection();
     account_id = params[:account_id]
     question_id = params[:question_id]
     Question::toggle_question_like(account_id, question_id, db)
     return Question::get_question_likes(question_id, db).size().to_s
+end
+
+post '/like_answer/?' do
+    db = Auth::open_connection();
+    account_id = params[:account_id]
+    answer_id = params[:answer_id]
+    Question::toggle_answer_like(account_id, answer_id, db)
+    return Question::get_answer_likes(answer_id, db).size().to_s
 end
 
 # ----- Profile -----

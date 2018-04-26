@@ -132,6 +132,7 @@ header .title {
 .question .interactions * {
     margin: 10px 10px 0 0;
     color: black;
+    text-decoration: none;
 }
 
 .question .author {
@@ -144,6 +145,39 @@ header .title {
 .question .author img {
     width: 50px;
     margin-right: 10px;
+}
+
+.question .answers {
+    margin: 20px;
+    background-color: #EEEEEE;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.question .answers .answer {
+    background-color: #DDDDDD;
+    margin: 20px 0;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.reactions {
+    display: flex;
+    flex-direction: row;
+}
+
+.answer-interactions {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.question .answers p {
+    margin: 0;
+}
+
+.answer-interactions * {
+    margin-right: 5px;
 }
 
 .ask-question {
