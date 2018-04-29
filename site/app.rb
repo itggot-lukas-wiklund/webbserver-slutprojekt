@@ -50,13 +50,13 @@ post '/question/:question_id/?' do
     question_id = params["question_id"].to_i
     message = params["answer"]
 
-    if message.empty?
-        return slim :'index/question', locals:get_layout_locals().merge({"question": question, "error": "You can't post an empty answer!"})
-    end
-
     question = Question::get_question(question_id, Auth::get_logged_in_user_id(session), nil)
     if question == nil
         return "404 - Question not found"
+    end
+
+    if message.empty?
+        return slim :'index/question', locals:get_layout_locals().merge({"question": question, "error": "You can't post an empty answer!"})
     end
 
     Question::post_answer(question_id, message, Auth::get_logged_in_user_id(session), nil)
