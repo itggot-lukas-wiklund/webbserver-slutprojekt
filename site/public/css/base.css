@@ -205,3 +205,48 @@ header .title {
 .profile-image {
     width: 200px;
 }
+
+form {
+    margin: auto;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+form h2 {
+    margin: 0 0 20px 0;
+}
+
+form input {
+    margin: 5px 0;
+    height: 40px;
+    font-size: 16px;
+}
+
+form input:not([type="submit"]) {
+    box-sizing: border-box;
+    padding: 0 20px;
+    border-radius: 8px;
+    border: #DDDDDD solid 1px;
+}
+
+form input[type="submit"] {
+    border-radius: 20px;
+    border: none;
+    transition: .2s;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+    transform: scale(1.03);
+    background-color: #CCCCCC;
+}
+
+form input[type="submit"]:active {
+    transform: scale(0.97);
+    background-color: #EEEEEE;
+}
+
+form p {
+    margin: 0 0 5px 0;
+}
