@@ -119,4 +119,24 @@ module Auth
 
         return account
     end
+
+    # Return codes:
+    # 0 = Success
+    # 1 = User not found
+    # 2 = Old password is incorrect
+    def change_password(account_id, old_password, new_password, db)
+        db = open_connection_if_nil(db)
+        account = get_user_by_id(account_id, db)
+        if account == nil
+            return 1
+        end
+
+        if BCrypt::Password.new(account["password"]) != old_password
+            return 2
+        end
+
+        db.execute("UPDATE accounts SET password = ? WHERE id = ?", [BCrypt::Password.create(new_password), account_id])
+
+        return 0
+    end
 end

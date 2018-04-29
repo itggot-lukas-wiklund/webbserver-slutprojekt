@@ -91,6 +91,10 @@ header .title {
     color: red !important;
 }
 
+.text-success {
+    color: green !important;
+}
+
 .text-liked {
     color: blue !important;
 }

@@ -208,14 +208,41 @@ end
 
 get '/account/settings/?' do
     if Auth::is_authenticated(session)
-        return slim :'account/settings', locals:get_layout_locals()
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "", "change_password_message": ""})
     end
 
     return redirect('/account/login/')
 end
 
-post '/account/settings/?' do
+post '/account/settings/change_password/?' do
+    if !Auth::is_authenticated(session)
+        return redirect("/account/login/")
+    end
+    old_password = params['old_password']
+    new_password = params['new_password']
+    new_password_confirm = params['new_password_confirm']
 
+    if old_password.empty? || new_password.empty? || new_password_confirm.empty?
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "Please fill in all the fields!", "change_password_message": ""})
+    end
+
+    if new_password != new_password_confirm
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "New passwords don't match!", "change_password_message": ""})
+    end
+
+    if old_password == new_password
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "The old and the new password have to be different!", "change_password_message": ""})
+    end
+
+    result = Auth::change_password(Auth::get_logged_in_user_id(session), old_password, new_password, nil)
+
+    if result == 0
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "", "change_password_message": "Password changed successfully!"})
+    elsif result == 1
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "User not found!", "change_password_message": ""})
+    elsif result == 2
+        return slim :'account/settings', locals:get_layout_locals().merge({"change_password_error": "Wrong old password!", "change_password_message": ""})
+    end
 end
 
 def get_layout_locals()
