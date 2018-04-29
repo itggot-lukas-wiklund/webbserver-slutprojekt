@@ -95,14 +95,14 @@ module Auth
 
     def get_user_email(email, db)
         db = open_connection_if_nil(db)
-        accounts = db.execute("SELECT * FROM accounts WHERE email = ?", [email])
+        accounts = db.execute("SELECT * FROM accounts WHERE LOWER(email) = ?", [email.downcase])
         if accounts.size() > 0 then return accounts[0] end
         return nil
     end
 
     def get_user_username(username, db)
         db = open_connection_if_nil(db)
-        accounts = db.execute("SELECT * FROM accounts WHERE username = ?", [username])
+        accounts = db.execute("SELECT * FROM accounts WHERE LOWER(username) = ?", [username.downcase])
         if accounts.size() > 0 then return accounts[0] end
         return nil
     end
