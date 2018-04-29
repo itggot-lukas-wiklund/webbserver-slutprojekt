@@ -1,5 +1,7 @@
 h1 Login
 form method="post" action="/account/login/"
+    - if error != ""
+        p.text-danger = error
     input type="text" name="login_name" placeholder="Username or Email"
     input type="password" name="password" placeholder="Password"
     input type="submit" value="Login"

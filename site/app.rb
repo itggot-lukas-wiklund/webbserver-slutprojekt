@@ -138,7 +138,7 @@ end
 
 # ----- Account -----
 get '/account/login/?' do
-    return slim :'account/login', locals:get_layout_locals()
+    return slim :'account/login', locals:get_layout_locals().merge({"error": ""})
 end
 
 post '/account/login/?' do
@@ -147,14 +147,14 @@ post '/account/login/?' do
 
     account = Auth::login(login_name, password, session)
     if account == nil
-        return slim :'account/login', locals:get_layout_locals()
+        return slim :'account/login', locals:get_layout_locals().merge({"error": "Wrong login credentials!"})
     end
 
     return redirect('/')
 end
 
 get '/account/register/?' do
-    return slim :'account/register', locals:get_layout_locals()
+    return slim :'account/register', locals:get_layout_locals().merge({"error": ""})
 end
 
 post '/account/register/?' do
@@ -164,12 +164,12 @@ post '/account/register/?' do
     password_confirm = params['password_confirm']
 
     if password != password_confirm
-        return slim :'account/register', locals:get_layout_locals()
+        return slim :'account/register', locals:get_layout_locals().merge({"error": "The passwords don't match!"})
     end
 
     account = Auth::register(email, username, password, session)
     if account == nil
-        return slim :'account/register', locals:get_layout_locals()
+        return slim :'account/register', locals:get_layout_locals().merge({"error": "Failed to create account!"})
     end
 
     return redirect('/account/setup_profile/')
@@ -192,8 +192,7 @@ end
 post '/account/setup_profile/?' do
     account_id = Auth::get_logged_in_user_id(session)
     if account_id == nil
-        genders = Profile::get_genders()
-        return slim :'account/setup_profile', locals:get_layout_locals().merge({'genders' => genders})
+        return redirect("/account/login/")
     end
 
     name = params['name']

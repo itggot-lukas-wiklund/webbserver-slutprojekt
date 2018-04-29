@@ -1,5 +1,7 @@
 h1 Register
 form method="post" action="/account/register/"
+    - if error != ""
+        p.text-danger = error
     input type="email" name="email" placeholder="Email"
     input type="text" name="username" placeholder="Username"
     input type="password" name="password" placeholder="Password"
