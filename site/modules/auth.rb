@@ -42,17 +42,21 @@ module Auth
         return get_user_by_id(account_id, nil)
     end
 
+    # Return codes:
+    # [account] = Success
+    # 1 = Email is already in use
+    # 2 = Username is already in use
     def register(email, username, password, session)
         db = open_connection()
         account = get_user(email, db)
         if account != nil
             print "Email is already in use!"
-            return nil
+            return 1
         end
         account = get_user(username, db)
         if account != nil
             print "Username is already in use!"
-            return nil
+            return 2
         end
 
         password_hash = BCrypt::Password.create(password)

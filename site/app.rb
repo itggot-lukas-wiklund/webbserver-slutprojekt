@@ -168,8 +168,10 @@ post '/account/register/?' do
     end
 
     account = Auth::register(email, username, password, session)
-    if account == nil
-        return slim :'account/register', locals:get_layout_locals().merge({"error": "Failed to create account!"})
+    if account == 1
+        return slim :'account/register', locals:get_layout_locals().merge({"error": "Email is already in use!"})
+    elsif account == 2
+        return slim :'account/register', locals:get_layout_locals().merge({"error": "Username is already in use!"})
     end
 
     return redirect('/account/setup_profile/')
