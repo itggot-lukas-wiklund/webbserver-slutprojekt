@@ -40,7 +40,7 @@ get '/question/:question_id/?' do
         return "404 - Question not found"
     end
 
-    return slim :'index/question', locals:get_layout_locals().merge({"question": question})
+    return slim :'index/question', locals:get_layout_locals().merge({"question": question, "error": ""})
 end
 
 post '/question/:question_id/?' do

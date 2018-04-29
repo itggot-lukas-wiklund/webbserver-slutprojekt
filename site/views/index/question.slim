@@ -48,6 +48,8 @@
             
             - if is_authenticated
                 form method="post" action="/question/#{question.id}/"
+                    - if error
+                        p.text-danger = error
                     input type="text" name="answer" placeholder="Answer..."
                     input type="submit" value="Answer"
             - else
