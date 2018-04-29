@@ -87,6 +87,10 @@ get '/profile/?' do
     end
 
     profile = Profile::get_profile(get_logged_in_user_id(session), nil)
+    if profile["name"].empty?
+        return redirect("/account/setup_profile/")
+    end
+
     return slim :'profile/my_profile', locals:get_layout_locals().merge({'profile' => profile})
 end
 
