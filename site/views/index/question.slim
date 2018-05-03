@@ -10,10 +10,10 @@
 						- if question.likes.size() != 1
 							| s
 					a
-                        = question.answers.size()
-                        |  Answer
-                        - if question.answers.size() != 1
-                            | s
+						= question.answers.size()
+						|  Answer
+						- if question.answers.size() != 1
+							| s
 				- if is_authenticated
 					div
 						- if question.is_liked
@@ -22,35 +22,39 @@
 							a.clickable onclick="likeQuestion(this, #{user['id']}, #{question.id})" Like
 						a.clickable href="/question/#{question.id}" Answer
 			.author
-				img src="/uploads/avatars/#{question.author['avatar']}"
-				== question.author['name']
-        
+				a href="/profile/#{question.author['account_id']}"
+					img src="/uploads/avatars/#{question.author['avatar']}"
+				a href="/profile/#{question.author['account_id']}"
+					== question.author['name']
+					
         .answers
-            - question.answers.each do |answer|
-                .answer
-                    p == answer.message
-                    .footer
-                        .answer-interactions
-                            a id="answer-likes-#{answer.id}"
-                                = answer.likes.size()
-                                |  Like
-                                - if answer.likes.size() != 1
-                                    | s
-                            - if is_authenticated
-                                - if answer.is_liked
-                                    a.clickable.text-liked onclick="likeAnswer(this, #{user['id']}, #{answer.id})" Like
-                                - else
-                                    a.clickable onclick="likeAnswer(this, #{user['id']}, #{answer.id})" Like
-                            
-                        .author
-                            img src="/uploads/avatars/#{answer.author['avatar']}"
-                            == answer.author['name']
-            
-            - if is_authenticated
-                form method="post" action="/question/#{question.id}/"
-                    - if error
-                        p.text-danger = error
-                    input type="text" name="answer" placeholder="Answer..."
-                    input type="submit" value="Answer"
-            - else
-                p Please login to add an answer
+					- question.answers.each do |answer|
+						.answer
+							p == answer.message
+							.footer
+								.answer-interactions
+									a id="answer-likes-#{answer.id}"
+										= answer.likes.size()
+										|  Like
+										- if answer.likes.size() != 1
+											| s
+									- if is_authenticated
+										- if answer.is_liked
+											a.clickable.text-liked onclick="likeAnswer(this, #{user['id']}, #{answer.id})" Like
+										- else
+											a.clickable onclick="likeAnswer(this, #{user['id']}, #{answer.id})" Like
+										
+								.author
+									a href="/profile/#{answer.author['account_id']}"
+										img src="/uploads/avatars/#{answer.author['avatar']}"
+									a href="/profile/#{answer.author['account_id']}"
+										== answer.author['name']
+				
+					- if is_authenticated
+							form method="post" action="/question/#{question.id}/"
+								- if error
+										p.text-danger = error
+								input type="text" name="answer" placeholder="Answer..."
+								input type="submit" value="Answer"
+					- else
+						p Please login to add an answer
