@@ -188,6 +188,8 @@ post '/account/register/?' do
         return slim :'account/register', locals:get_layout_locals().merge({"error": "Email is already in use!"})
     elsif account == 2
         return slim :'account/register', locals:get_layout_locals().merge({"error": "Username is already in use!"})
+    elsif account == 3
+        return slim :'account/register', locals:get_layout_locals().merge({"error": "Username contains forbidden characters! Allowed characters: a-z A-Z 0-9 _ -"})
     end
 
     return redirect('/account/setup_profile/')

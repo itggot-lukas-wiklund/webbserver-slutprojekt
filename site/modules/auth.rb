@@ -46,8 +46,13 @@ module Auth
     # [account] = Success
     # 1 = Email is already in use
     # 2 = Username is already in use
+    # 3 = Forbidden characters in username
     def register(email, username, password, session)
         db = open_connection()
+        if !username.match(/^[\w\d_-]+$/)
+            puts "Username contains forbidden characters!"
+            return 3
+        end
         account = get_user(email, db)
         if account != nil
             print "Email is already in use!"
