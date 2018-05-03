@@ -1,6 +1,6 @@
 .question
-		h1 = question.title
-		p = question.description
+		h1 == question.title
+		p == question.description
 		.footer
 			.interactions
 				div
@@ -23,12 +23,12 @@
 						a.clickable href="/question/#{question.id}" Answer
 			.author
 				img src="/uploads/avatars/#{question.author['avatar']}"
-				= question.author['name']
+				== question.author['name']
         
         .answers
             - question.answers.each do |answer|
                 .answer
-                    p = answer.message
+                    p == answer.message
                     .footer
                         .answer-interactions
                             a id="answer-likes-#{answer.id}"
@@ -44,7 +44,7 @@
                             
                         .author
                             img src="/uploads/avatars/#{question.author['avatar']}"
-                            = question.author['name']
+                            == question.author['name']
             
             - if is_authenticated
                 form method="post" action="/question/#{question.id}/"

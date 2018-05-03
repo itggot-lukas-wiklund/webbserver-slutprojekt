@@ -3,12 +3,14 @@ require 'slim'
 require_relative 'modules/auth'
 require_relative 'modules/profile'
 require_relative 'modules/question'
+require_relative 'modules/escaper'
 
 enable :sessions
 
 include Auth
 include Profile
 include Question
+include Escaper
 
 get '/' do
     questions = Question::get_all_questions(Auth::get_logged_in_user_id(session), nil)
@@ -20,8 +22,8 @@ post '/' do
         return redirect('/')
     end
 
-    title = params['title']
-    description = params['description']
+    title = Escaper::escape(params['title'])
+    description = Escaper::escape(params['description'])
 
     if title.empty? || description.empty?
         questions = Question::get_all_questions(Auth::get_logged_in_user_id(session), nil)
@@ -34,7 +36,7 @@ post '/' do
 end
 
 get '/question/:question_id/?' do
-    question_id = params["question_id"].to_i
+    question_id = Escaper::escape(params["question_id"]).to_i
     question = Question::get_question(question_id, Auth::get_logged_in_user_id(session), nil)
     if question == nil
         return "404 - Question not found"
@@ -47,8 +49,8 @@ post '/question/:question_id/?' do
     if !Auth::is_authenticated(session)
         return slim :'index/question', locals:get_layout_locals().merge({"question": question, "error": "You need to be logged in to answer!"})
     end
-    question_id = params["question_id"].to_i
-    message = params["answer"]
+    question_id = Escaper::escape(params["question_id"]).to_i
+    message = Escaper::escape(params["answer"])
 
     question = Question::get_question(question_id, Auth::get_logged_in_user_id(session), nil)
     if question == nil
@@ -66,16 +68,16 @@ end
 
 post '/like_question/?' do
     db = Auth::open_connection();
-    account_id = params[:account_id]
-    question_id = params[:question_id]
+    account_id = Escaper::escape(params[:account_id]).to_i
+    question_id = Escaper::escape(params[:question_id]).to_i
     Question::toggle_question_like(account_id, question_id, db)
     return Question::get_question_likes(question_id, db).size().to_s
 end
 
 post '/like_answer/?' do
     db = Auth::open_connection();
-    account_id = params[:account_id]
-    answer_id = params[:answer_id]
+    account_id = Escaper::escape(params[:account_id]).to_i
+    answer_id = Escaper::escape(params[:answer_id]).to_i
     Question::toggle_answer_like(account_id, answer_id, db)
     return Question::get_answer_likes(answer_id, db).size().to_s
 end
@@ -142,7 +144,7 @@ get '/account/login/?' do
 end
 
 post '/account/login/?' do
-    login_name = params['login_name']
+    login_name = Escaper::escape(params['login_name'])
     password = params['password']
 
     account = Auth::login(login_name, password, session)
@@ -158,8 +160,8 @@ get '/account/register/?' do
 end
 
 post '/account/register/?' do
-    email = params['email']
-    username = params['username']
+    email = Escaper::escape(params['email'])
+    username = Escaper::escape(params['username'])
     password = params['password']
     password_confirm = params['password_confirm']
 
@@ -197,9 +199,9 @@ post '/account/setup_profile/?' do
         return redirect("/account/login/")
     end
 
-    name = params['name']
-    gender_id = params['gender']
-    location = params['location']
+    name = Escaper::escape(params['name'])
+    gender_id = Escaper::escape(params['gender']).to_i
+    location = Escaper::escape(params['location'])
 
     Profile::update_profile(account_id, name, gender_id, location)
 

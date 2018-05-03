@@ -5,8 +5,8 @@ form method="post" action="/profile/change_avatar/" enctype="multipart/form-data
 	input type="submit" value="Change Avatar"
 h2
 	| Name: 
-	= profile['name']
+	== profile['name']
 h2
 	| Location: 
 	a href="https://www.google.com/maps/place/#{profile['location']}"
-		= profile['location']
+		== profile['location']

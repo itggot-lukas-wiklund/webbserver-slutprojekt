@@ -3,6 +3,6 @@ form method="post" action="/account/setup_profile"
     input type="text" name="name" placeholder="Full Name" required=""
     select name="gender"
         - genders.each do |gender|
-            option value="#{gender['id']}" = gender['title']
+            option value="#{gender['id']}" == gender['title']
     input type="text" name="location" placeholder="Location (optional)"
     input type="submit" value="Save Profile"

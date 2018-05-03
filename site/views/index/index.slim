@@ -9,8 +9,8 @@
 
 - questions.each do |question|
   .question
-		h1 = question.title
-		p = question.description
+		h1 == question.title
+		p == question.description
 		.footer
 			.interactions
 				a.reactions href="/question/#{question.id}"
@@ -33,4 +33,4 @@
 						a.clickable href="/question/#{question.id}" Answer
 			.author
 				img src="/uploads/avatars/#{question.author['avatar']}"
-				= question.author['name']
+					== question.author['name']
