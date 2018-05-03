@@ -175,6 +175,10 @@ post '/account/register/?' do
     password = params['password']
     password_confirm = params['password_confirm']
 
+    if email.empty? || username.empty? || password.empty? || password_confirm.empty?
+        return slim :'account/register', locals:get_layout_locals().merge({"error": "Please fill in all the fields!"})
+    end
+
     if password != password_confirm
         return slim :'account/register', locals:get_layout_locals().merge({"error": "The passwords don't match!"})
     end
