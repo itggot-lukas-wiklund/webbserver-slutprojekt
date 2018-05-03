@@ -55,12 +55,12 @@ module Auth
         end
         account = get_user(email, db)
         if account != nil
-            print "Email is already in use!"
+            puts "Email is already in use!"
             return 1
         end
         account = get_user(username, db)
         if account != nil
-            print "Username is already in use!"
+            puts "Username is already in use!"
             return 2
         end
 
