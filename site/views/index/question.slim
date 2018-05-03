@@ -43,8 +43,8 @@
                                     a.clickable onclick="likeAnswer(this, #{user['id']}, #{answer.id})" Like
                             
                         .author
-                            img src="/uploads/avatars/#{question.author['avatar']}"
-                            == question.author['name']
+                            img src="/uploads/avatars/#{answer.author['avatar']}"
+                            == answer.author['name']
             
             - if is_authenticated
                 form method="post" action="/question/#{question.id}/"
