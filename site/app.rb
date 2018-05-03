@@ -138,6 +138,16 @@ post '/profile/change_avatar/?' do
     return redirect("/profile/")
 end
 
+get '/profile/:id/?' do
+    profile_id = Escaper::escape(params[:id]).to_i
+    profile = Profile::get_profile(profile_id, nil)
+    if profile == nil
+        return "404 - Profile not found!"
+    end
+
+    return slim :'profile/other_profile', locals:get_layout_locals().merge({'profile' => profile})
+end
+
 # ----- Account -----
 get '/account/login/?' do
     return slim :'account/login', locals:get_layout_locals().merge({"error": ""})

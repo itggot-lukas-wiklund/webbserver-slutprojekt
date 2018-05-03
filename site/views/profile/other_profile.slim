@@ -1,0 +1,8 @@
+h1
+	== profile["name"]
+	| 's Profile
+img.profile-image src="/uploads/avatars/#{profile['avatar']}"
+h2
+	| Location: 
+	a href="https://www.google.com/maps/place/#{profile['location']}"
+		== profile['location']

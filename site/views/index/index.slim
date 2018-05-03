@@ -32,5 +32,7 @@
 							a.clickable onclick="likeQuestion(this, #{user['id']}, #{question.id})" Like
 						a.clickable href="/question/#{question.id}" Answer
 			.author
-				img src="/uploads/avatars/#{question.author['avatar']}"
+				a href="/profile/#{question.author['account_id']}"
+					img src="/uploads/avatars/#{question.author['avatar']}"
+				a href="/profile/#{question.author['account_id']}"
 					== question.author['name']
