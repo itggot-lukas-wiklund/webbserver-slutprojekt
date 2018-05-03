@@ -20,10 +20,10 @@
 						- if question.likes.size() != 1
 							| s
 					div
-                        = question.answers.size()
-                        |  Answer
-                        - if question.answers.size() != 1
-                            | s
+						= question.answers.size()
+						|  Answer
+						- if question.answers.size() != 1
+								| s
 				- if is_authenticated
 					div
 						- if question.is_liked
