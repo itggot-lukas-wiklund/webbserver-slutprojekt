@@ -27,7 +27,10 @@ module Profile
         if profiles.size() == 0
             return nil
         end
-        return profiles[0]
+        profile = profiles.first
+        gender = db.execute("SELECT * FROM genders WHERE id = ?", [profile["gender_id"]]).first
+        profile["gender"] = gender["title"]
+        return profile
     end
 
     def update_profile(account_id, name, gender_id, location)
