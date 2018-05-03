@@ -172,8 +172,8 @@ header .title {
 
 .answer-interactions {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-direction: row;
+    align-items: flex-end;
 }
 
 .question .answers p {
