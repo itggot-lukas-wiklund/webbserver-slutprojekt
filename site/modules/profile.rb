@@ -28,8 +28,12 @@ module Profile
             return nil
         end
         profile = profiles.first
-        gender = db.execute("SELECT * FROM genders WHERE id = ?", [profile["gender_id"]]).first
-        profile["gender"] = gender["title"]
+        gender = db.execute("SELECT * FROM genders WHERE id = ?", [profile["gender_id"].to_s]).first
+        if gender == nil
+            profile["gender"] = ""
+        else
+            profile["gender"] = gender["title"]
+        end
         return profile
     end
 
